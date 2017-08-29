@@ -37,10 +37,12 @@ static bool enable_netmgr_wl_ws = false;
 module_param(enable_netmgr_wl_ws, bool, 0644);
 
 #ifdef CONFIG_BOEFFLA_WL_BLOCKER
-char list_wl[255];
-char list_wl_search[257];
+char list_wl[255] = {0};
+char list_wl_search[257] = {0};
 bool wl_blocker_active = false;
 bool wl_blocker_debug = false;
+
+static void wakeup_source_deactivate(struct wakeup_source *ws);
 #endif
 
 
@@ -496,6 +498,7 @@ static bool check_for_block(struct wakeup_source *ws)
 		if (strlen(ws->name) > 50)
 			return false;
 
+		// check if wakelock is in wake lock list to be blocked
 		sprintf(wakelock_name, ";%s;", ws->name);
 
 		if(strstr(list_wl_search, wakelock_name) == NULL)
@@ -522,12 +525,25 @@ static bool check_for_block(struct wakeup_source *ws)
 	return false;
 	}
 
-	// wake lock is in list, print it if debug mode on
-	if (wl_blocker_debug)
-		printk("Boeffla WL blocker: %s blocked\n", ws->name);
+		// wake lock is in list, print it if debug mode on
+		if (wl_blocker_debug)
+			printk("Boeffla WL blocker: %s blocked\n", ws->name);
 
-	// finally block it
-	return true;
+		// if it is currently active, deactivate it immediately + log in debug mode
+		if (ws->active)
+		{
+			wakeup_source_deactivate(ws);
+
+			if (wl_blocker_debug)
+				printk("Boeffla WL blocker: %s killed\n", ws->name);
+		}
+
+		// finally block it
+		return true;
+	}
+
+	// there was no valid ws structure, do not block by default
+	return false;
 }
 #endif
 
