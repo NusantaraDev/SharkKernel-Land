@@ -37,8 +37,9 @@ static bool enable_netmgr_wl_ws = false;
 module_param(enable_netmgr_wl_ws, bool, 0644);
 
 #ifdef CONFIG_BOEFFLA_WL_BLOCKER
-char list_wl[255] = {0};
-char list_wl_search[257] = {0};
+#include "boeffla_wl_blocker.h"
+
+char list_wl_search[LENGTH_LIST_WL_SEARCH] = {0};
 bool wl_blocker_active = false;
 bool wl_blocker_debug = false;
 
