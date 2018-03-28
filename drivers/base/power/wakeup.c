@@ -457,7 +457,6 @@ static bool check_for_block(struct wakeup_source *ws)
 {
 	char wakelock_name[52] = {0};
 	int length;
-	char wakelock_name[52];
 
 	// if debug mode on, print every wakelock requested
 	if (wl_blocker_debug)
@@ -523,9 +522,6 @@ static bool check_for_block(struct wakeup_source *ws)
 				printk("Boeffla WL blocker: %s killed\n", ws->name);
 		}
 
-		// finally block it
-		return true;
-	}
 
 	// there was no valid ws structure, do not block by default
 	return false;
