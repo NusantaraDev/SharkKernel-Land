@@ -3855,7 +3855,7 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
 	bfqd->bfq_fifo_expire[1] = bfq_fifo_expire[1];
 	bfqd->bfq_back_max = bfq_back_max;
 	bfqd->bfq_back_penalty = bfq_back_penalty;
-	bfqd->bfq_slice_idle = blk_queue_nonrot(q) ? 0 : bfq_slice_idle;
+	bfqd->bfq_slice_idle = bfq_slice_idle;
 	bfqd->bfq_class_idle_last_service = 0;
 	bfqd->bfq_max_budget_async_rq = bfq_max_budget_async_rq;
 	bfqd->bfq_timeout[BLK_RW_ASYNC] = bfq_timeout_async;
@@ -3899,8 +3899,8 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
 
 static void bfq_registered_queue(struct request_queue *q)
 {
-	struct elevator_queue *eq = q->elevator;
-	struct bfq_data *bfqd = eq->elevator_data;
+	struct elevator_queue *e = q->elevator;
+	struct bfq_data *bfqd = e->elevator_data;
 
 	/*
 	 * Default to IOPS mode with no idling for SSDs
