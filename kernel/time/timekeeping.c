@@ -762,7 +762,10 @@ int timekeeping_inject_offset(struct timespec *ts)
 	/* Make sure the proposed value is valid */
 	tmp = timespec64_add(tk_xtime(tk),  ts64);
 	if (timespec64_compare(&tk->wall_to_monotonic, &ts64) > 0 ||
+
 	    !timespec64_valid_strict(&tmp)) {
+		!timespec64_valid_strict(&tmp)) {
+
 		ret = -EINVAL;
 		goto error;
 	}
@@ -770,7 +773,7 @@ int timekeeping_inject_offset(struct timespec *ts)
 	tk_xtime_add(tk, &ts64);
 	tk_set_wall_to_mono(tk, timespec64_sub(tk->wall_to_monotonic, ts64));
 
-error: /* even if we error out, we forwarded the time, so call update */
+	 /* even if we error out, we forwarded the time, so call update */
 	timekeeping_update(tk, TK_CLEAR_NTP | TK_MIRROR | TK_CLOCK_WAS_SET);
 
 	write_seqcount_end(&tk_core.seq);
