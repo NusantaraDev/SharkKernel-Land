@@ -4750,6 +4750,9 @@ static int ufshcd_slave_alloc(struct scsi_device *sdev)
 	sdev->no_report_opcodes = 1;
 
 	/* WRITE_SAME command is not supported*/
+
+	/* WRITE_SAME command is not supported */
+
 	sdev->no_write_same = 1;
 
 	ufshcd_set_queue_depth(sdev);
