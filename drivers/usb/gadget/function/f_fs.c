@@ -2889,6 +2889,9 @@ static int _ffs_func_bind(struct usb_configuration *c,
 	const int high = func->ffs->hs_descs_count;
 	const int super = func->ffs->ss_descs_count;
 
+	const int high = !!func->ffs->hs_descs_count;
+	const int super = !!func->ffs->ss_descs_count;
+
 	int fs_len, hs_len, ss_len, ret, i;
 
 	/* Make it a single chunk, less management later on */
