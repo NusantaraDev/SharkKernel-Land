@@ -866,7 +866,7 @@ retry:
 		}
 
 		if (io_data->aio) {
-			req = usb_ep_alloc_request(ep->ep, GFP_ATOMIC);
+			req = usb_ep_alloc_request(ep->ep, GFP_KERNEL);
 			if (unlikely(!req))
 				goto error_lock;
 
@@ -2889,9 +2889,6 @@ static int _ffs_func_bind(struct usb_configuration *c,
 	const int high = func->ffs->hs_descs_count;
 	const int super = func->ffs->ss_descs_count;
 
-	const int high = !!func->ffs->hs_descs_count;
-	const int super = !!func->ffs->ss_descs_count;
-
 	int fs_len, hs_len, ss_len, ret, i;
 
 	/* Make it a single chunk, less management later on */
@@ -3160,7 +3157,7 @@ static int ffs_func_setup(struct usb_function *f,
 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
 
-	return USB_GADGET_DELAYED_STATUS;
+	return 0;
 }
 
 static void ffs_func_suspend(struct usb_function *f)
@@ -3611,12 +3608,6 @@ static void ffs_closed(struct ffs_data *ffs)
 	    || !atomic_read(&opts->func_inst.group.cg_item.ci_kref.refcount))
 		goto done;
 
-	ci = opts->func_inst.group.cg_item.ci_parent->ci_parent;
-	ffs_dev_unlock();
-
-	if (test_bit(FFS_FL_BOUND, &ffs->flags))
-		unregister_gadget_item(ci);
-	return;
 done:
 	ffs_dev_unlock();
 }
