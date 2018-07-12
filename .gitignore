@@ -48,6 +48,11 @@ Module.symvers
 /Module.markers
 
 #
+# Out dir
+#
+out/
+
+#
 # Debian directory (make deb-pkg)
 #
 /debian/
