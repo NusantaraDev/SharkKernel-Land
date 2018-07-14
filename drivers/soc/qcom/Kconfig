@@ -924,6 +924,9 @@ config MSM_SMART_SUPPORT
 	  Enable this to be able to choose the smart policy for controlling the
 	  performance and power on some msm platforms.
 
+config STATE_NOTIFIER
+        bool "State Notifier"
+
 source "drivers/soc/qcom/memshare/Kconfig"
 
 endif # ARCH_MSM

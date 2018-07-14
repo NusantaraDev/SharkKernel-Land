@@ -113,3 +113,11 @@ obj-$(CONFIG_MSM_REMOTEQDSS) += remoteqdss.o
 obj-$(CONFIG_QCOM_SMCINVOKE) += smcinvoke.o
 obj-$(CONFIG_QCOM_EARLY_RANDOM)	+= early_random.o
 obj-$(CONFIG_MSM_HAB) += hab/
+
+obj-$(CONFIG_CPUMAXFREQ) += cpumaxfreq.o
+obj-$(CONFIG_SERIAL_NUM) += serial_num.o
+obj-$(CONFIG_SECBOOT_FUSE) += secboot_fuse.o
+obj-$(CONFIG_QCOM_EARLY_RANDOM)	+= early_random.o
+obj-$(CONFIG_MSM_HAB) += hab/
+obj-$(CONFIG_STATE_NOTIFIER) += state_notifier.o
+
